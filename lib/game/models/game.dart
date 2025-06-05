@@ -16,7 +16,7 @@ class Game {
   });
 
   String get dateTimeFormatted {
-    return '${dateTime.weekday == DateTime.monday ? 'Mon' : ''}, ${dateTime.day} ${_month(dateTime.month)} ${dateTime.year} \u2014 ${_formatTime(dateTime)}';
+    return '${dateTime.day} ${_month(dateTime.month)} ${dateTime.year} \u2014 ${_formatTime(dateTime)}';
   }
 
   String _month(int m) {

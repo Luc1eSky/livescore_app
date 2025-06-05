@@ -4,8 +4,8 @@ final List<Game> currentGames = List.generate(
   5,
   (index) => Game(
     dateTime: DateTime(2025, 5, 19, 7),
-    teamA: 'Dark',
-    teamB: 'Light',
+    teamA: 'TeamNameDark',
+    teamB: 'TeamNameLight',
     scoreA: 5,
     scoreB: 8,
     field: 'Garfield Square #1',

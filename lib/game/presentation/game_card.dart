@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../data/team_row.dart';
 import '../models/game.dart';
 
 class GameCard extends StatelessWidget {
@@ -19,37 +18,55 @@ class GameCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Top Row: Date + Time + Status + Division
+            // Top Row: Date and Field
+            Text(
+              '${game.dateTimeFormatted} · ${game.field}',
+              style: const TextStyle(fontSize: 16, color: Colors.grey),
+            ),
+            const SizedBox(height: 12),
+
+            // Team A row
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  game.dateTimeFormatted, // e.g., Fri Jun 6 - 9:00 AM
+                  game.teamA,
                   style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
-                const SizedBox(width: 8),
-                const SizedBox(width: 8),
-                const Spacer(),
+                Text(
+                  game.scoreA.toString(),
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ],
             ),
-            const SizedBox(height: 4),
-            // Field Info
-            Text(
-              game.field,
-              style: const TextStyle(fontSize: 13, color: Colors.black54),
+            const SizedBox(height: 12),
+
+            // Team B row
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  game.teamB,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Text(
+                  game.scoreB.toString(),
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 8),
-            // Team Rows
-            teamRow(
-              context,
-              name: game.teamA,
-              score: game.scoreA,
-              isBold: true,
-            ),
-            const SizedBox(height: 4),
-            teamRow(context, name: game.teamB, score: game.scoreB),
           ],
         ),
       ),

@@ -36,22 +36,30 @@ class _GameSchedulePageState extends State<GameSchedulePage> {
 
   Widget filterButton(String label, GameFilter filterType) {
     final isSelected = selectedFilter == filterType;
+
     return Expanded(
-      child: GestureDetector(
-        onTap: () => setFilter(filterType),
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          decoration: BoxDecoration(
-            color: isSelected ? Colors.purple[300] : Colors.white,
-            border: Border.all(color: Colors.grey),
+      child: OutlinedButton(
+        onPressed: () => setFilter(filterType),
+        style: OutlinedButton.styleFrom(
+          backgroundColor:
+              isSelected ? Colors.deepPurple.shade100 : Colors.white,
+          foregroundColor: Colors.black,
+          side: BorderSide(
+            color: isSelected ? Colors.deepPurple : Colors.grey.shade300,
+            width: 1.5,
           ),
-          child: Text(
-            label,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: isSelected ? Colors.black : Colors.grey[700],
-            ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          elevation: 0,
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 14,
+            color: isSelected ? Colors.black : Colors.grey[700],
           ),
         ),
       ),
@@ -61,30 +69,56 @@ class _GameSchedulePageState extends State<GameSchedulePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.lightBlue[50],
-      appBar: AppBar(title: const Text('Goaltimate Garfield Square')),
-      body: Column(
-        children: [
-          Row(
-            children: [
-              filterButton('Upcoming Games', GameFilter.upcoming),
-              filterButton('Current Games', GameFilter.current),
-              filterButton('Finished Games', GameFilter.finished),
-            ],
-          ),
-          Expanded(
-            child:
-                activeList.isEmpty
-                    ? const Center(child: Text('No games available.'))
-                    : ListView.builder(
-                      itemCount: activeList.length,
-                      itemBuilder: (context, index) {
-                        final game = activeList[index];
-                        return GameCard(game: game);
-                      },
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text(
+          'Goaltimate Garfield Square',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 32),
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                filterButton('Upcoming Games', GameFilter.upcoming),
+                const SizedBox(width: 8),
+                filterButton('Current Games', GameFilter.current),
+                const SizedBox(width: 8),
+                filterButton('Finished Games', GameFilter.finished),
+              ],
+            ),
+            Expanded(
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  // Use MediaQuery or constraints to adjust number of cards per row
+                  int crossAxisCount = 1;
+                  double width = constraints.maxWidth;
+
+                  if (width > 600) {
+                    crossAxisCount = 2;
+                  }
+
+                  return GridView.builder(
+                    padding: const EdgeInsets.all(12),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: crossAxisCount,
+                      crossAxisSpacing: 12,
+                      mainAxisSpacing: 12,
+                      childAspectRatio: 3, // Wider than tall
                     ),
-          ),
-        ],
+                    itemCount: activeList.length,
+                    itemBuilder: (context, index) {
+                      final game = activeList[index];
+                      return GameCard(game: game);
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
